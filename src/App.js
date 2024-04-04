@@ -22,7 +22,7 @@ const App = () => {
 
     fetchWeatherData();
 
-    const interval = setInterval(fetchWeatherData, 1 * 60 * 1000);
+    const interval = setInterval(fetchWeatherData, 5 * 60 * 1000);
 
     // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(interval);
