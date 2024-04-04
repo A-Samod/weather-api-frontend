@@ -14,45 +14,61 @@ const MapComponent = ({ weatherData }) => {
       {weatherData.map(
         ({
           id,
-          city,
+          district,
           lat,
           lng,
           temperature,
           humidity,
-          airPressure,
-          wind_speed,
-          weatherDescriptions,
-          observationTime,
-          weatherIcons,
-          isDay,
+          air_pressure,
+          updatedAt,
         }) => {
+          let dynamicIconUrl =
+            "https://i.pinimg.com/originals/77/0b/80/770b805d5c99c7931366c2e84e88f251.png";
+          if (temperature < 30) {
+            dynamicIconUrl =
+              "https://static.vecteezy.com/system/resources/previews/012/066/505/original/sunny-and-rainy-day-weather-forecast-icon-meteorological-sign-3d-render-png.png";
+          }
+
           const dynamicIcon = new L.Icon({
-            iconUrl: weatherIcons,
+            iconUrl: dynamicIconUrl,
             iconSize: [30, 30],
             iconAnchor: [12, 41],
             popupAnchor: [1, -34],
           });
 
+          const formatDate = (timestamp) => {
+            const date = new Date(timestamp);
+            const offset = 5.5 * 60 * 60 * 1000; // 5 hours and 30 minutes in milliseconds
+            const adjustedDate = new Date(date.getTime() - offset);
+            const formattedDate = adjustedDate.toLocaleDateString();
+            const formattedTime = adjustedDate.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+            return `${formattedDate} ${formattedTime}`;
+          };
+
           return (
             <Marker key={id} position={[lat, lng]} icon={dynamicIcon}>
               <Popup>
-                <strong>{city}</strong>
-                <br />
-                <br />
-                Daytime: {isDay ? "Yes" : "No"}
-                <br />
-                Temperature: {temperature}°C
-                <br />
-                Humidity: {humidity}%
-                <br />
-                Air Pressure: {airPressure} hPa
-                <br />
-                Wind Speed: {wind_speed} km/h
-                <br />
-                Weather: {weatherDescriptions}
-                <br />
-                Observation Time: {observationTime}
-                <br />
+                <div className="custom-popup">
+                  <strong>{district}</strong>
+                  <hr />
+                  <div className="weather-info">
+                    <div>
+                      <span>Temperature:</span> {temperature}°C
+                    </div>
+                    <div>
+                      <span>Humidity:</span> {humidity}%
+                    </div>
+                    <div>
+                      <span>Air Pressure:</span> {air_pressure} hPa
+                    </div>
+                    <div>
+                      <span>Updated At:</span> {formatDate(updatedAt)}
+                    </div>
+                  </div>
+                </div>
               </Popup>
             </Marker>
           );
