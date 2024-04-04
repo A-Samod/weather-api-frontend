@@ -2,6 +2,8 @@ import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import sunnyImg from "../images/sunnyWeather.png"
+import rainyImg from "../images/rainWeather.webp"
 
 const MapComponent = ({ weatherData }) => {
   return (
@@ -22,11 +24,12 @@ const MapComponent = ({ weatherData }) => {
           air_pressure,
           updatedAt,
         }) => {
-          let dynamicIconUrl =
-            "https://i.pinimg.com/originals/77/0b/80/770b805d5c99c7931366c2e84e88f251.png";
+          let dynamicIconUrl = sunnyImg;
+            // "https://i.pinimg.com/originals/77/0b/80/770b805d5c99c7931366c2e84e88f251.png";
+            
           if (temperature < 25) {
-            dynamicIconUrl =
-              "https://static.vecteezy.com/system/resources/previews/012/066/505/original/sunny-and-rainy-day-weather-forecast-icon-meteorological-sign-3d-render-png.png";
+            dynamicIconUrl = rainyImg
+              // "https://static.vecteezy.com/system/resources/previews/012/066/505/original/sunny-and-rainy-day-weather-forecast-icon-meteorological-sign-3d-render-png.png";
           }
 
           const dynamicIcon = new L.Icon({
