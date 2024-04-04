@@ -1,43 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MapComponent from "./components/MapComponent";
+import Sidebar from "./components/Sidebar";
 
 const App = () => {
-  const [weatherData, setWeatherData] = useState([
-    {
-      id: 1,
-      city: "Colombo",
-      lat: 6.9271,
-      lng: 79.8612,
-      temperature: 28,
-      humidity: 75,
-      airPressure: 1012,
-      wind_speed: 12,
-      weatherDescriptions: "Partly cloudy",
-      observationTime: "2024-04-01 12:00:00",
-      weatherIcons: "https://example.com/icon.png",
-      isDay: true,
-    },
-    {
-      id: 2,
-      city: "Kandy",
-      lat: 7.2906,
-      lng: 80.6337,
-      temperature: 25,
-      humidity: 70,
-      airPressure: 1013,
-      wind_speed: 10,
-      weatherDescriptions: "Cloudy",
-      observationTime: "2024-04-01 12:00:00",
-      weatherIcons: "https://example.com/icon.png",
-      isDay: false,
-    },
-    // Add more weather data objects as needed
-  ]);
+  const [weatherData, setWeatherData] = useState([]);
+  const [filteredWeatherData, setFilteredWeatherData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/api/v1/weather/details");
+        const data = await response.json();
+        console.log("data ===>>",data)
+        setWeatherData(data.data);
+        setFilteredWeatherData(data.data); // Initially set filtered data same as weather data
+      } catch (error) {
+        console.error("Error fetching weather data:", error);
+      }
+    };
+
+    fetchWeatherData();
+
+    const interval = setInterval(fetchWeatherData, 1 * 60 * 1000);
+
+    // Cleanup function to clear the interval when the component unmounts
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleSearch = (searchTerm) => {
+    setSearchTerm(searchTerm); // Update search term state
+    if (searchTerm.trim() === "") {
+      // If search term is empty, reset filtered data to initial data
+      setFilteredWeatherData(weatherData);
+    } else {
+      // Filter weatherData based on searchTerm
+      const filteredData = weatherData.filter((district) =>
+        district.district.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredWeatherData(filteredData);
+    }
+  };
 
   return (
-    <div>
-      <h1>Weather Map Sri Lanka</h1>
-      <MapComponent weatherData={weatherData} />
+    <div className="app">
+      {/* <h1>Weather Map Sri Lanka</h1> */}
+      <h1 className="title">Weather Map Sri Lanka</h1>
+      <div className="container">
+        <MapComponent weatherData={filteredWeatherData} />
+        <Sidebar weatherData={weatherData} onSearch={handleSearch} />
+      </div>
     </div>
   );
 };
