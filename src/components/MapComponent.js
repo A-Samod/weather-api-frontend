@@ -24,7 +24,7 @@ const MapComponent = ({ weatherData }) => {
         }) => {
           let dynamicIconUrl =
             "https://i.pinimg.com/originals/77/0b/80/770b805d5c99c7931366c2e84e88f251.png";
-          if (temperature < 30) {
+          if (temperature < 25) {
             dynamicIconUrl =
               "https://static.vecteezy.com/system/resources/previews/012/066/505/original/sunny-and-rainy-day-weather-forecast-icon-meteorological-sign-3d-render-png.png";
           }
