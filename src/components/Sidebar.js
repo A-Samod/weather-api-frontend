@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import "./styles.css"; 
+import "./styles.css";
+import rainyImage from "../images/rainWeather.webp";
+import sunnyImage from "../images/sunnyWeather.png";
+
 const Sidebar = ({ weatherData, onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -18,11 +21,22 @@ const Sidebar = ({ weatherData, onSearch }) => {
     const adjustedDate = new Date(date.getTime() - offset);
     const formattedDate = adjustedDate.toLocaleDateString();
     // const formattedTime = adjustedDate.toLocaleTimeString();
-    const formattedTime = adjustedDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const formattedTime = adjustedDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
     return `${formattedDate} ${formattedTime}`;
   };
 
-  console.log("filterdata ====>>>" ,filteredDistricts )
+  console.log("filterdata ====>>>", filteredDistricts);
+
+  const getWeatherImage = (temperature) => {
+    if (temperature < 25) {
+      return rainyImage;
+    } else {
+      return sunnyImage;
+    }
+  };
 
   return (
     <div className="sidebar">
@@ -36,16 +50,22 @@ const Sidebar = ({ weatherData, onSearch }) => {
         {filteredDistricts.map((district) => (
           <div key={district.id} className="district">
             <h3>{district.district}</h3>
-            {/* <p>Temperature: {district.temperature}°C</p>
-            <p>Humidity: {district.humidity}%</p>
-            <p>Air Pressure: {district.air_pressure} hPa</p> */}
+            <hr/>
+            
             <div className="weather-data">
-              <p>Temperature: {district.temperature}°C</p>
-              <p>Humidity: {district.humidity}%</p>
-              <p>Air Pressure: {district.air_pressure} hPa</p>
-              <p>Upadated At: {formatDate(district.updatedAt)} </p>
+              <div className="weather-image">
+                <img
+                  src={getWeatherImage(district.temperature)}
+                  alt="Weather"
+                />
+              </div>
+              <div className="weather-details">
+                <p>Temperature: {district.temperature}°C</p>
+                <p>Humidity: {district.humidity}%</p>
+                <p>Air Pressure: {district.air_pressure} hPa</p>
+                <p>Upadated At: {formatDate(district.updatedAt)} </p>
+              </div>
             </div>
-
           </div>
         ))}
       </div>
