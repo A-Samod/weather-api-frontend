@@ -10,11 +10,12 @@ const App = () => {
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/v1/weather/details");
+        //const response = await fetch("http://localhost:4000/api/v1/weather/details");
+        const response = await fetch("https://api.avishka.tech/api/v1/weather/details");
         const data = await response.json();
         console.log("data ===>>",data)
         setWeatherData(data.data);
-        setFilteredWeatherData(data.data); // Initially set filtered data same as weather data
+        setFilteredWeatherData(data.data);
       } catch (error) {
         console.error("Error fetching weather data:", error);
       }
@@ -29,7 +30,7 @@ const App = () => {
   }, []);
 
   const handleSearch = (searchTerm) => {
-    setSearchTerm(searchTerm); // Update search term state
+    setSearchTerm(searchTerm); 
     if (searchTerm.trim() === "") {
       // If search term is empty, reset filtered data to initial data
       setFilteredWeatherData(weatherData);
