@@ -1,11 +1,5 @@
 # Student ID : COBSCCOMP4Y222P-011
 
-<style>
-  body {
-     font-family:'Trebuchet MS';
-  }
-</style>
-
 # WEATHER MAP FRONTEND
 
 This project is a frontend application built with React that displays weather data on a map for 24 districts in Sri Lanka. The weather data includes temperature, humidity, air pressure, and the latest updated date. The data is synced from a backend API.
