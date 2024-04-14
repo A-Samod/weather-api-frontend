@@ -38,7 +38,7 @@ git clone https://github.com/A-Samod/weather-api-frontend
 2. Navigate to the project directory:
 
 ```
-cd weather-map-frontend
+cd weather-api-frontend
 ```
 
 3. Install dependencies:
